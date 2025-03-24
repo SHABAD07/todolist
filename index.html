@@ -3,168 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scientific Calculator</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>To-Do List</title>
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: linear-gradient(135deg, #000000, #0d47a1, #32cd32);
-            flex-direction: column;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background: linear-gradient(270deg, #ff0000, #ffffff);
+            color: white;
         }
-        .calculator {
-            width: 350px;
-            background: white;
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background: #001F3F;
             padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            border: 3px solid #32cd32;
-        }
-        #display {
-            width: 100%;
-            height: 50px;
-            font-size: 1.5em;
-            text-align: right;
-            padding: 10px;
-            border: none;
-            background: #eee;
             border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 255, 0, 0.5);
         }
-        .buttons {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
-            margin-top: 10px;
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background: #333;
+            padding: 10px;
+            margin: 5px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 8px;
+            box-shadow: 0px 2px 5px rgba(0, 255, 0, 0.3);
         }
         button {
-            padding: 15px;
-            font-size: 1em;
             border: none;
+            padding: 8px 12px;
+            border-radius: 20px;
             cursor: pointer;
-            border-radius: 50px;
-            background: #0d47a1;
+            font-size: 14px;
+            box-shadow: 0px 2px 5px rgba(0, 255, 0, 0.4);
+            transition: 0.3s;
+        }
+        .delete-btn {
+            background: red;
             color: white;
-            box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
-            transition: 0.2s;
+        }
+        .done-btn {
+            background: green;
+            color: white;
         }
         button:hover {
-            background: #08306b;
-            transform: scale(1.05);
+            transform: scale(1.1);
         }
-        .clear-btn {
-            background: #ff0000 !important;
+        input {
+            padding: 10px;
+            border-radius: 20px;
+            border: 1px solid #0f0;
+            width: 70%;
+            background: #333;
+            color: white;
+            box-shadow: 0px 2px 5px rgba(0, 255, 0, 0.3);
         }
-        .clear-btn:hover {
-            background: #b20000 !important;
-        }
-        .history {
-            width: 350px;
-            margin-top: 20px;
-            padding: 15px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            max-height: 150px;
-            overflow-y: auto;
-        }
-        .history h3 {
-            margin: 0 0 10px;
-            text-align: center;
-        }
-        .history p {
-            margin: 5px 0;
-            font-size: 14px;
-            color: #333;
+    @keyframes gradientShift {
+            0% {
+                background: linear-gradient(270deg, #111, #0f0);
+            }
+            50% {
+                background: linear-gradient(270deg, #0f0, #111);
+            }
+            100% {
+                background: linear-gradient(270deg, #111, #0f0);
+            }
         }
     </style>
 </head>
 <body>
-    <audio id="clickSound" src="https://www.fesliyanstudios.com/play-mp3/1421"></audio>
-    <div class="calculator">
-        <input type="text" id="display" disabled>
-        <div class="buttons">
-            <button class="clear-btn" onclick="clearDisplay()">C</button>
-            <button onclick="appendValue('/')">/</button>
-            <button onclick="appendValue('*')">*</button>
-            <button onclick="appendValue('-')">-</button>
-            <button onclick="appendValue('+')">+</button>
-            <button onclick="appendValue('7')">7</button>
-            <button onclick="appendValue('8')">8</button>
-            <button onclick="appendValue('9')">9</button>
-            <button onclick="appendValue('4')">4</button>
-            <button onclick="appendValue('5')">5</button>
-            <button onclick="appendValue('6')">6</button>
-            <button onclick="appendValue('1')">1</button>
-            <button onclick="appendValue('2')">2</button>
-            <button onclick="appendValue('3')">3</button>
-            <button onclick="appendValue('0')">0</button>
-            <button onclick="appendValue('.')">.</button>
-            <button onclick="appendValue('%')">%</button>
-            <button onclick="calculateResult()">=</button>
-            <button onclick="appendValue('Math.sqrt(')">√</button>
-            <button onclick="appendValue('Math.pow(')">x^y</button>
-            <button onclick="appendValue('Math.sin(')">sin</button>
-            <button onclick="appendValue('Math.cos(')">cos</button>
-            <button onclick="appendValue('Math.tan(')">tan</button>
-        </div>
+    <div class="container">
+        <h2>To-Do List</h2>
+        <input type="text" id="task" placeholder="Enter a task">
+        <button onclick="addTask()" style="background: blue; color: white;">Add</button>
+        <ul id="taskList"></ul>
     </div>
-    <div class="history">
-        <h3>Calculation History</h3>
-        <div id="historyContent"></div>
-    </div>
+
+    <audio id="clickSound" src="https://www.fesliyanstudios.com/play-mp3/2764" preload="auto"></audio>
+
     <script>
         function playSound() {
-            let sound = document.getElementById('clickSound');
+            let sound = document.getElementById("clickSound");
             sound.currentTime = 0;
             sound.play();
-        }
-
-        function appendValue(value) {
-            playSound();
-            document.getElementById('display').value += value;
-        }
-        function clearDisplay() {
-            playSound();
-            document.getElementById('display').value = '';
-        }
-        function calculateResult() {
-            playSound();
-            try {
-                let expression = document.getElementById('display').value;
-                let result = eval(expression);
-                document.getElementById('display').value = result;
-                addToHistory(expression + ' = ' + result);
-            } catch (e) {
-                alert('Invalid Expression');
-            }
-        }
-        function addToHistory(entry) {
-            let historyDiv = document.getElementById('historyContent');
-            let newEntry = document.createElement('p');
-            newEntry.textContent = entry;
-            historyDiv.prepend(newEntry);
+            sound.volume = 1.0;
         }
         
-        document.addEventListener('keydown', function(event) {
-            const key = event.key;
-            if (/\d/.test(key) || ['+', '-', '*', '/', '%', '.'].includes(key)) {
-                playSound();
-                appendValue(key);
-            } else if (key === 'Enter') {
-                playSound();
-                calculateResult();
-            } else if (key === 'Backspace') {
-                playSound();
-                let display = document.getElementById('display');
-                display.value = display.value.slice(0, -1);
-            } else if (key === 'Escape') {
-                playSound();
-                clearDisplay();
-            }
-        });
+        function addTask() {
+            let taskInput = document.getElementById("task");
+            let taskText = taskInput.value.trim();
+            if (taskText === "") return;
+            
+            let li = document.createElement("li");
+            li.innerHTML = `${taskText} 
+                <button class="done-btn" onclick="markDone(this)">Done</button>
+                <button class="delete-btn" onclick="removeTask(this)">Delete</button>`;
+            document.getElementById("taskList").appendChild(li);
+            taskInput.value = "";
+            playSound();
+        }
+
+        function removeTask(button) {
+            button.parentElement.remove();
+            playSound();
+        }
+
+        function markDone(button) {
+            let li = button.parentElement;
+            li.style.textDecoration = "line-through";
+            li.style.opacity = "0.6";
+            button.textContent = "Undone";
+            button.classList.remove("done-btn");
+            button.classList.add("undone-btn");
+            button.onclick = function() { markUndone(this); };
+            playSound();
+        }
+            function markUndone(button) {
+            let li = button.parentElement;
+            li.style.textDecoration = "none";
+            li.style.opacity = "1";
+            button.textContent = "Done";
+            button.classList.remove("undone-btn");
+            button.classList.add("done-btn");
+            button.onclick = function() { markDone(this); };
+            playSound();
+        }
     </script>
 </body>
 </html>
